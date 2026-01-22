@@ -1,0 +1,7 @@
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\bin\Debug\Rockzenekar.exe.config
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\bin\Debug\Rockzenekar.exe
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\bin\Debug\Rockzenekar.pdb
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\obj\Debug\Rockzenekar.csproj.AssemblyReference.cache
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\obj\Debug\Rockzenekar.csproj.CoreCompileInputs.cache
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\obj\Debug\Rockzenekar.exe
+C:\Users\v-kisric082\Documents\v-kisric082\Kis_Richard_asztalialk\Rockzenekar\Rockzenekar\obj\Debug\Rockzenekar.pdb
