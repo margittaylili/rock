@@ -7,6 +7,21 @@ const ZenekarokLista = () => {
     const [zenekarok, setZenekarok] = useState([]);
     const [stilusok, setStilusok] = useState([]);
 
+    const handleDelete = async (id) => {
+        if (window.confirm("Biztosan törölni szeretnéd ezt az együttest?")) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/zenekar/${id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    setZenekarok(zenekarok.filter((zenekar) => zenekar.id !== id));
+                }
+            } catch (error) {
+                console.error("Hiba a törlés során:", error);
+            }
+        }
+    };
+
     useEffect(() => {
         const fetchZenekarok = async () => {
             try {
@@ -73,6 +88,12 @@ const ZenekarokLista = () => {
                             }}
                         >
                             Aktív évek száma
+                        </button>
+                        <button 
+                            className="btn btn-danger px-4 ms-2"
+                            onClick={() => handleDelete(zenekar.id)}
+                        >
+                            Törlés
                         </button>
                     </div>
                 </div>

@@ -75,6 +75,18 @@ app.get('/api/stilusok', (req, res) => {
     });
 });
 
+app.delete('/api/zenekar/:id', (req, res) => {
+    const sql = 'DELETE FROM zenekarok WHERE id = ?';
+    adatbazis.query(sql, [req.params.id], (err, results) => {
+        if (err) {
+            console.error('Törlési hiba:', err);
+            res.status(500).send('Hiba a törlés során');
+            return;
+        }
+        res.send('Sikeres törlés');
+    });
+});
+
 app.listen(port, () => {
     console.log(`Szerver fut a ${port} porton`);
 });
