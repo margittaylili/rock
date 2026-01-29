@@ -1,0 +1,54 @@
+﻿<Window x:Class="rockZenekarokGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:rockZenekarokGUI"
+        mc:Ignorable="d"
+        Title="Rockzenekarok a 70-es évekből" Height="450" Width="1000">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/koncert.jpg"/>
+        </Grid.Background>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Rockzenekarok adatai:" 
+               Grid.Row="0" Grid.ColumnSpan="2"
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Top" 
+               FontSize="22" 
+               Foreground="White" 
+               Margin="10"/>
+
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10">
+                <ListBox Name="zenekarokLista" SelectionChanged="zenekarokLista_SelectionChanged" Height="200">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Nev}" />
+                                <TextBlock Text="; tagok: " />
+                                <TextBlock Text="{Binding Tagok}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Button Name="btn_betolt" Content="Adatok betöltése" Height="40" Margin="0,10,0,0" Click="btn_betoltes"/>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Label Content="Aktív évek száma:" Foreground="White" FontSize="16"/>
+                    <TextBlock x:Name="txt_aktiv" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                </StackPanel>
+            </StackPanel>
+
+            <Image Name="zenekarKep" Grid.Row="1" Grid.Column="1" Margin="10" Stretch="Uniform"/>
+        </Grid>
+    </Grid>
+</Window>

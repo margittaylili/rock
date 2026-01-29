@@ -1,0 +1,52 @@
+{
+    "clientName": "Thunder Client",
+    "collectionName": "Backend_teszt",
+    "collectionId": "b07ef280-5e9f-481b-88f7-fd07042286a6",
+    "dateExported": "2025-05-20T09:52:05.090Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "63d009ac-a633-4202-af2c-d69b2c692e02",
+            "colId": "b07ef280-5e9f-481b-88f7-fd07042286a6",
+            "containerId": "",
+            "name": "zenekarok",
+            "url": "http://localhost:3000/api/zenekar",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2025-05-20T07:13:46.218Z",
+            "modified": "2025-05-20T07:13:52.176Z",
+            "headers": []
+        },
+        {
+            "_id": "4624d00b-0cb7-4b55-9095-34e7cfa1ddff",
+            "colId": "b07ef280-5e9f-481b-88f7-fd07042286a6",
+            "containerId": "",
+            "name": "stilusok",
+            "url": "http://localhost:3000/api/stilusok",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2025-05-20T07:14:01.352Z",
+            "modified": "2025-05-20T07:14:06.630Z",
+            "headers": []
+        },
+        {
+            "_id": "8dbcb558-7370-4937-a894-2a8eb9b45634",
+            "colId": "b07ef280-5e9f-481b-88f7-fd07042286a6",
+            "containerId": "",
+            "name": "ujzenekar",
+            "url": "http://localhost:3000/api/ujzenekar",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2025-05-20T07:18:18.760Z",
+            "modified": "2025-05-20T09:49:08.202Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"nev\": \"Teszt Név\",\n  \"stilus_id\": 1,\n  \"orszag\": \"Magyarország\",\n  \"varos\": \"Siófok\",\n  \"aktiv_evek\": 5,\n  \"tagok\": \"Tag1, Tag2\",\n  \"legsikeresebb_album\": \"Létező album\",\n  \"kep_url\": \"nincs\"\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "3OUbg_RSJcqq10zvm0C9KpkQSebaolbNwRtz3mLEsmHxjm1JIsDIRXeAx8qhen-6akF4cXW3FCAHmwE3fGd9iA"
+}
