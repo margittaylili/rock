@@ -7,13 +7,17 @@ Ez az API végpont az összes zenekar adatainak lekérdezésére szolgál az ada
 
 ```javascript
 app.get('/api/zenekar', (req, res) => {
-    const sql = 'SELECT * FROM zenekarok';
-    adatbazis.query(sql, (err, results) => {
+    // Oldalazás paraméterek (alapértelmezett értékek, ha nem adja meg a kliens)
+    const limit = parseInt(req.query.limit) || 10; // Rekordok száma kérésenként
+    const offset = parseInt(req.query.offset) || 0; // Hány rekordot hagyjunk ki
+
+    const sql = 'SELECT * FROM zenekarok LIMIT ? OFFSET ?';
+    adatbazis.query(sql, [limit, offset], (err, results) => {
         if (err) {
-            console.error('Lekérdezési hiba:', err);
-            res.status(500).send('Hiba a lekérdezés során');
-            return;
+            console.error('Lekérdezési hiba:', err.sqlMessage);
+            return res.status(500).send('Hiba a lekérdezés során.');
         }
+
         res.json(results);
     });
 });
@@ -111,3 +115,21 @@ A következő módszerekkel tesztelheted az API-t:
 - Az összes zenekar adatait visszaadja, nincs limit vagy oldalazás
 - Ha az adatbázis üres, akkor egy üres tömböt (`[]`) ad vissza
 - A hibaüzenetek a szerver konzolján is megjelennek, ami segít a hibakeresésben
+
+/*
+Fájl célja: Az összes zenekar adatainak lekérdezése az adatbázisból.
+
+Hibák:
+Nincs oldalazás (pagination):
+
+A kód az összes rekordot visszaadja, ami nagy adatbázis esetén teljesítményproblémákat okozhat.
+Javítás: Oldalazás hozzáadása LIMIT és OFFSET paraméterekkel.
+Hibakezelés általánossága:
+
+A hibakezelés során a kliensnek küldött hibaüzenet nem részletezi, hogy miért történt a hiba.
+Javítás: A hibakezelést részletesebbé kell tenni, például: "Adatbázis hiba történt a lekérdezés során."
+Autentikáció hiánya:
+
+Az API bárki számára elérhető, ami biztonsági kockázatot jelenthet.
+Javítás: Autentikáció hozzáadása (pl. JWT token használata).
+*/

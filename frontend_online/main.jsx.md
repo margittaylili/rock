@@ -190,3 +190,21 @@ Ez a projekt Vite-t használ build eszközként:
 - [ ] Service Worker hozzáadása offline működéshez
 - [ ] Analytics inicializálása
 - [ ] Redux vagy más state management hozzáadása
+
+/*
+Fájl célja: A React alkalmazás belépési pontja.
+
+Hibák:
+Error Boundary hiánya:
+
+Az alkalmazás nem tartalmaz Error Boundary-t, ami elkapná a hibákat és megakadályozná az alkalmazás összeomlását.
+Javítás: Hozzunk létre egy ErrorBoundary komponenst.
+Globális CSS használata:
+
+A globális CSS felülírhatja más komponensek stílusait.
+Javítás: Moduláris CSS vagy styled-components használata ajánlott.
+Service Worker hiánya:
+
+Az alkalmazás nem támogatja az offline működést.
+Javítás: Hozzunk létre egy Service Worker-t a PWA funkcionalitás érdekében.
+*/

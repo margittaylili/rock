@@ -7,14 +7,34 @@ Ez az API végpont egy zenekar törlésére szolgál az adatbázisból az ID ala
 
 ```javascript
 app.delete('/api/zenekar/:id', (req, res) => {
-    const sql = 'DELETE FROM zenekarok WHERE id = ?';
-    adatbazis.query(sql, [req.params.id], (err, results) => {
+    const id = req.params.id;
+
+    // 1. Ellenőrizzük, hogy az ID létezik-e
+    const checkSql = 'SELECT COUNT(*) AS count FROM zenekarok WHERE id = ?';
+    adatbazis.query(checkSql, [id], (err, results) => {
         if (err) {
-            console.error('Törlési hiba:', err);
-            res.status(500).send('Hiba a törlés során');
-            return;
+            console.error('SQL Hiba (ellenőrzés):', err.sqlMessage);
+            return res.status(500).send('Adatbázis hiba történt.');
         }
-        res.send('Sikeres törlés');
+
+        if (results[0].count === 0) {
+            return res.status(404).send('A megadott ID-val nem található zenekar.');
+        }
+
+        // 2. Ha az ID létezik, töröljük a rekordot
+        const deleteSql = 'DELETE FROM zenekarok WHERE id = ?';
+        adatbazis.query(deleteSql, [id], (err, results) => {
+            if (err) {
+                console.error('Törlési hiba:', err.sqlMessage);
+                return res.status(500).send('Hiba a törlés során.');
+            }
+
+            if (results.affectedRows === 0) {
+                return res.status(404).send('A megadott ID-val nem található zenekar.');
+            }
+
+            res.status(200).send('Sikeres törlés.');
+        });
     });
 });
 ```
@@ -158,5 +178,20 @@ const handleDelete = async (id) => {
     console.error('Hiba:', error);
     alert('Hiba történt a törlés során!');
   }
-};
-```
+}; /*
+
+Fájl célja: Zenekar törlése az adatbázisból az ID alapján.
+
+Hibák:
+Nem ellenőrzi, hogy az ID létezik-e a törlés előtt:
+
+A kód nem ellenőrzi, hogy a megadott ID-val létezik-e rekord a zenekarok táblában.
+Javítás: A törlés előtt ellenőrizni kell, hogy az ID létezik-e. Ha nem, akkor 404-es státuszkóddal kell visszatérni.
+Hibakezelés általánossága:
+
+A hibakezelés során a kliensnek küldött hibaüzenet nem részletezi, hogy miért történt a hiba.
+Javítás: A hibakezelést részletesebbé kell tenni, például: "A megadott ID-val nem található zenekar."
+SQL injection elleni védelem:
+
+Bár a prepared statement használata biztonságos, érdemes megemlíteni, hogy az ID-t validálni kell (pl. szám-e).
+*/

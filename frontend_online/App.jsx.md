@@ -6,28 +6,28 @@ Az `App.jsx` fájl a React alkalmazás fő komponense, amely felelős az útvona
 ## Kód részletes magyarázata
 
 ```javascript
-import { useState } from 'react'
-import { Route } from 'react-router-dom'
-import { Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom';
 
-import Kezdolap from './oldalak/Kezdolap.jsx'
-import Zenekarok from './oldalak/Zenekarok.jsx'
-import Ujegyuttes from './oldalak/Ujegyuttes.jsx'
+import Kezdolap from './oldalak/Kezdolap.jsx';
+import Zenekarok from './oldalak/Zenekarok.jsx';
+import Ujegyuttes from './oldalak/Ujegyuttes.jsx';
+import NotFound from './oldalak/NotFound.jsx'; // 404 oldal
 
-import "tachyons/css/tachyons.min.css"
-import "bootstrap/dist/css/bootstrap.min.css"
+import "tachyons/css/tachyons.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Kezdolap/>} />
-      <Route path="/zenekarok" element={<Zenekarok/>} />
-      <Route path="/hozzaadasEgyuttes" element={<Ujegyuttes/>} />
+      <Route path="/" element={<Kezdolap />} />
+      <Route path="/zenekarok" element={<Zenekarok />} />
+      <Route path="/hozzaadasEgyuttes" element={<Ujegyuttes />} />
+      <Route path="*" element={<NotFound />} /> {/* 404 oldal */}
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
 ```
 
 ### Soronkénti magyarázat:
@@ -140,7 +140,23 @@ function MyComponent() {
   
   return <button onClick={goToZenekarok}>Zenekarok</button>;
 }
-```
+
+/*Fájl célja: A React alkalmazás fő komponense, amely az útvonalakat kezeli.
+
+Hibák:
+Nem használt useState import:
+
+A useState hook importálva van, de nincs használatban.
+Javítás: Távolítsuk el az importot, ha nincs rá szükség.
+404 oldal hiánya:
+
+Ha a felhasználó egy nem létező útvonalra navigál, az alkalmazás nem kezel semmilyen hibát.
+Javítás: Adjuk hozzá a 404-es oldal kezelését egy wildcard (*) útvonallal.
+Navigációs menü hiánya:
+
+Az alkalmazásban nincs navigációs menü, ami megkönnyítené az oldalak közötti váltást.
+Javítás: Hozzunk létre egy navigációs menü komponenst.
+*/
 
 ## Fontos megjegyzések
 

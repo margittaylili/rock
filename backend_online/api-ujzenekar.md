@@ -10,19 +10,34 @@ app.post('/api/ujzenekar', (req, res) => {
     // 1. Megnézzük, mit kapunk a Reacttól
     console.log("Beérkező adatok:", req.body);
 
-    const {nev, stilus_id, orszag, varos, aktiv_evek, tagok, legsikeresebb_album, kep_url } = req.body;
-    
-    const sql = 'INSERT INTO zenekarok (nev, stilus_id, orszag, varos, aktiv_evek, tagok, legsikeresebb_album, kep_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    
-    adatbazis.query(sql, [nev, stilus_id, orszag, varos, aktiv_evek, tagok, legsikeresebb_album, kep_url], (err, results) => {
+    const { nev, stilus_id, orszag, varos, aktiv_evek, tagok, legsikeresebb_album, kep_url } = req.body;
+
+    // 2. Kötelező mezők validálása
+    if (!nev || !stilus_id || !orszag || !varos || !aktiv_evek || !tagok || !legsikeresebb_album || !kep_url) {
+        return res.status(400).send('Hiányzó kötelező mezők!');
+    }
+
+    // 3. Ellenőrizzük, hogy a stilus_id létezik-e
+    const checkStyleSql = 'SELECT COUNT(*) AS count FROM stilusok WHERE id = ?';
+    adatbazis.query(checkStyleSql, [stilus_id], (err, results) => {
         if (err) {
-            // 2. Kiírjuk a konkrét SQL hibát!
-            console.error("SQL Hiba történt:", err.sqlMessage); 
-            console.error("Hiba kód:", err.code);
-            res.status(500).send('Adatbázis hiba: ' + err.sqlMessage);
-            return;
+            console.error("SQL Hiba történt (stilus_id ellenőrzés):", err.sqlMessage);
+            return res.status(500).send('Adatbázis hiba történt.');
         }
-        res.status(201).json({ id: results.insertId });
+
+        if (results[0].count === 0) {
+            return res.status(400).send('Érvénytelen stilus_id!');
+        }
+
+        // 4. Ha minden rendben, beszúrjuk az új zenekart
+        const sql = 'INSERT INTO zenekarok (nev, stilus_id, orszag, varos, aktiv_evek, tagok, legsikeresebb_album, kep_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        adatbazis.query(sql, [nev, stilus_id, orszag, varos, aktiv_evek, tagok, legsikeresebb_album, kep_url], (err, results) => {
+            if (err) {
+                console.error("SQL Hiba történt:", err.sqlMessage);
+                return res.status(500).send('Adatbázis hiba történt.');
+            }
+            res.status(201).json({ id: results.insertId });
+        });
     });
 });
 ```
@@ -171,3 +186,23 @@ A következő módszerekkel tesztelheted az API-t:
 - Az SQL injection támadások ellen védett a prepared statement használata miatt
 - A hibaüzenetek részletesek, ami segít a hibakeresésben
 - A sikeres válasz tartalmazza az újonnan létrehozott rekord ID-ját, amit a frontend használhat
+
+/*Fájl célja: Új zenekar hozzáadása az adatbázishoz.
+
+Hibák:
+SQL hibaüzenet közvetlen visszaküldése:
+
+A res.status(500).send('Adatbázis hiba: ' + err.sqlMessage); sorban az SQL hibaüzenet közvetlenül visszaküldésre kerül a kliensnek, ami biztonsági kockázatot jelenthet.
+Javítás: Általános hibaüzenetet kell küldeni a kliensnek, például: "Adatbázis hiba történt. Kérjük, próbálja újra később."
+Kötelező mezők validálása:
+
+A kötelező mezők validálása csak azt ellenőrzi, hogy az értékek léteznek-e, de nem ellenőrzi az adattípusokat vagy a formátumot.
+Javítás: Ellenőrizni kell, hogy a mezők megfelelnek-e az elvárt típusoknak (pl. stilus_id szám, kep_url érvényes URL).
+stilus_id ellenőrzése:
+
+A stilus_id mező ellenőrzése megtörténik, de a kód nem kezeli azt az esetet, ha az adatbázisban nem létezik a megadott stilus_id.
+Javítás: Ha a stilus_id nem létezik, részletesebb hibaüzenetet kell küldeni a kliensnek.
+Nem használt mezők:
+
+A tagok mező típusa nem egyértelmű (szám vagy szöveg). A dokumentációban és az adatbázisban is pontosítani kell.
+*/

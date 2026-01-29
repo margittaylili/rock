@@ -31,8 +31,9 @@ USE `rock_zenekarok_70s`;
 
 DROP TABLE IF EXISTS `stilusok`;
 CREATE TABLE `stilusok` (
-  `id` int NOT NULL,
-  `stilus_neve` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `stilus_neve` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
@@ -44,7 +45,7 @@ INSERT INTO `stilusok` (`id`, `stilus_neve`) VALUES
 (2, 'Hard rock'),
 (3, 'Progresszív rock'),
 (4, 'Pszichedelikus rock'),
-(5, 'Altarnatív rock'),
+(5, 'Alternatív rock'),
 (6, 'Punk rock'),
 (7, 'Dzsesszrock'),
 (8, 'Heavy metal');
@@ -57,7 +58,7 @@ INSERT INTO `stilusok` (`id`, `stilus_neve`) VALUES
 
 DROP TABLE IF EXISTS `zenekarok`;
 CREATE TABLE `zenekarok` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `nev` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   `stilus_id` int DEFAULT NULL,
   `orszag` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
@@ -65,7 +66,9 @@ CREATE TABLE `zenekarok` (
   `aktiv_evek` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
   `tagok` text CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci,
   `legsikeresebb_album` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci DEFAULT NULL,
-  `kep_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci
+  `kep_url` text CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci,
+  PRIMARY KEY (`id`),
+  KEY `stilus_id` (`stilus_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
@@ -78,8 +81,7 @@ INSERT INTO `zenekarok` (`id`, `nev`, `stilus_id`, `orszag`, `varos`, `aktiv_eve
 (3, 'Pink Floyd', 3, 'Egyesült Királyság', 'Cambridge', '1965–1995', 'David Gilmour, Roger Waters, Nick Mason, Richard Wright', 'The Dark Side of the Moon', 'https://www.rockbook.hu/sites/default/files/pink%20floyd%20rockbook%207.jpg'),
 (4, 'The Rolling Stones', 1, 'Egyesült Királyság', 'London', '1962–napjainkig', 'Mick Jagger, Keith Richards, Charlie Watts, Ronnie Wood', 'Sticky Fingers', 'https://www.rockbook.hu/sites/default/files/the%20rolling%20stones%20rockbook%204.jpg'),
 (5, 'AC/DC', 2, 'Ausztrália', 'Sydney', '1973–napjainkig', 'Angus Young, Malcolm Young, Bon Scott, Brian Johnson', 'Back in Black', 'https://www.rockbook.hu/sites/default/files/ac_dc-4-band-photo.jpg'),
-(6, 'KISS', 2, 'Egyesült Államok', 'New York', '1973–2023', 'Paul Stanley, Gene Simmons, Ace Frehley, Peter Criss', 'Destroyer', 'https://www.rockbook.hu/sites/default/files/kiss1.jpg'),
-(7, 'w', 7, 'w', 'w', '1978-1987', 'w', 'w', 'https://m.blog.hu/ro/rozsdagyar/image/cover_1.JPG');
+(6, 'KISS', 2, 'Egyesült Államok', 'New York', '1973–2023', 'Paul Stanley, Gene Simmons, Ace Frehley, Peter Criss', 'Destroyer', 'https://www.rockbook.hu/sites/default/files/kiss1.jpg');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -112,7 +114,7 @@ ALTER TABLE `stilusok`
 -- AUTO_INCREMENT a táblához `zenekarok`
 --
 ALTER TABLE `zenekarok`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -128,3 +130,20 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+/*
+Elírás a stilusok táblában:
+
+Hiba: Az Altarnatív rock helytelenül volt írva.
+Javítás: Javítva Alternatív rock-ra.
+Hibás sor a zenekarok táblában:
+
+Hiba: A zenekarok táblában a 7. sor hibás adatokat tartalmazott ('w', 'w', 'w', 'w', 'w').
+Javítás: A hibás sort eltávolítottam.
+NOT NULL és AUTO_INCREMENT pontosítása:
+
+Hiba: Az id oszlopoknál nem volt explicit AUTO_INCREMENT és NOT NULL megadva.
+Javítás: Az id oszlopoknál explicit módon megadtam a NOT NULL AUTO_INCREMENT attribútumot.
+*/
